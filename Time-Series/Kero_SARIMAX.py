@@ -45,14 +45,14 @@ result_mul.plot()
 pyplot.show()
 
 # Additive seasonal decomposition
-result_mul = seasonal_decompose(Kero['Kerosene'],   # 3 years
+result_add = seasonal_decompose(Kero['Kerosene'],   # 3 years
                                 model='additive', 
                                 period=1,
                                 extrapolate_trend='freq')
 
-seasonal_index = result_mul.seasonal[-12:].to_frame()
+seasonal_index = result_add.seasonal[-12:].to_frame()
 seasonal_index['Month'] = pd.to_datetime(seasonal_index.index).month
-result_mul.plot()
+result_add.plot()
 pyplot.show()
 
 # difference between multiplicative and additive decomposition:
