@@ -19,13 +19,6 @@ df_temp.head()
 df_merge_col = pd.merge(df_temp, Kero, left_index=True,right_index=True, how="inner")
 df_merged = df_merge_col
 
-# data processing
-# using last 10% of the data for testing
-train_size = int(len(df_merged) * 0.9)
-test_size = len(df_merged) - train_size
-train, test = df_merged.iloc[0:train_size], df_merged.iloc[train_size:len(df_merged)]
-print(len(train), len(test))
-
 # stationarity test
 import statsmodels.tsa.stattools as sts
 dftest = sts.adfuller(train.iloc[:,:].Kerosene)
