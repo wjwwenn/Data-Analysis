@@ -10,11 +10,13 @@
 # LASSO - Least Absolute Shrinkage and Selection Operator
 # Shrinks the regression coefficients toward 0 by penalizing the regression model
 # with a penalty term called L1-norm, which is the sum of the absolute coefficients
+
 # RIDGE
 # Shrinks the regression coefficients, so that variables, 
 # with minor contribution to the outcome, have their coefficients close to zero
 # with a penalty term called L2-norm, which is the sum of squared coefficients
-# Amt of penalty fine-tuned using constant called lambda.
+# amt of penalty fine-tuned using constant called lambda.
+
 # ELASTIC NET
 # penalized with both L1-norm and L2-norm
 # shrink coefficients (like ridge) and set coefficients to zero (like lasso)
@@ -23,17 +25,19 @@
 
 install.packages("fastDummies")
 
-# load data: 
-library(glmnet)
+# for reproducible results, if not lambda.min changes
+set.seed(1) 
 
 # used latin1 instead of UTF-8 encoding to load, if not file does not work
+library(glmnet)
+library(fastDummies)
 sample1=read.csv("/Users/jingwen/Desktop/AN6005 Foundation of Statistical Analysis/PPT's and data files/Week 10-Regression analysis 1/Week 10 mini-lecture files/week10_credit.csv", header=TRUE, stringsAsFactors=FALSE, fileEncoding="latin1")
 
 # create dummy variables for categorical variables
-library(fastDummies)
-x=dummy_cols(sample1[,c("Gender","Student","Married",
-                        "Ethnicity")], remove_first_dummy = TRUE)
-y=sample1[,"Balance"]
+x=dummy_cols(subset(sample1,select=-c(Balance)), # subset to exclude Balance column
+             select_columns = c("Gender","Student","Married", "Ethnicity"), 
+                                remove_first_dummy = TRUE)
+y=sample1[,"Balance"] # dependent variable
 
 # removing categorical variables
 x=subset(x,select = -c(Gender))
@@ -47,6 +51,10 @@ lasso=cv.glmnet(as.matrix(x),y,alpha=1)
 ridge=cv.glmnet(as.matrix(x),y,alpha=0)
 cv1 <- lasso
 cv0 <- ridge
+
+lasso$cvm # y-axis 
+lasso$lambda # horizontal axis x scale, not log transformed yet; lambda parameter, at which value is the best predicted value
+lasso$lambda.min
 
 # Extract the coefficients from lasso$glmnet.fit$beta, 
 # based on the lambda value that gives the lowest MSE in the cv test (==lasso$lambda.min)
