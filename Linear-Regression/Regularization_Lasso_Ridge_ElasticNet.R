@@ -1,5 +1,6 @@
 # regularization to control regression coefficients
 # reduce variance, decrease sample error
+# using GLMNET; other packages include caret and h20
 
 # install.packages('rsample')
 # install.packages('AmesHousing')
@@ -77,3 +78,49 @@ coef(ames_lasso, s = "lambda.1se") %>%
   ggtitle("Influential variables") +
   xlab("Coefficient") +
   ylab(NULL)
+
+# Elastic Net
+lasso    <- glmnet(ames_train_x, ames_train_y, alpha = 1) 
+elastic1 <- glmnet(ames_train_x, ames_train_y, alpha = 0.25) 
+elastic2 <- glmnet(ames_train_x, ames_train_y, alpha = 0.75) 
+ridge    <- glmnet(ames_train_x, ames_train_y, alpha = 0)
+
+# maintain the same folds across all models
+fold_id <- sample(1:10, size = length(ames_train_y), replace=TRUE)
+
+# search across a range of alphas
+tuning_grid <- tibble::tibble(
+  alpha      = seq(0, 1, by = .1),
+  mse_min    = NA,
+  mse_1se    = NA,
+  lambda_min = NA,
+  lambda_1se = NA
+)
+
+for(i in seq_along(tuning_grid$alpha)) {
+  # fit CV model for each alpha value
+  fit <- cv.glmnet(ames_train_x, ames_train_y, alpha = tuning_grid$alpha[i], foldid = fold_id)
+  
+  # extract MSE and lambda values
+  tuning_grid$mse_min[i]    <- fit$cvm[fit$lambda == fit$lambda.min]
+  tuning_grid$mse_1se[i]    <- fit$cvm[fit$lambda == fit$lambda.1se]
+  tuning_grid$lambda_min[i] <- fit$lambda.min
+  tuning_grid$lambda_1se[i] <- fit$lambda.1se
+}
+
+tuning_grid
+
+tuning_grid %>%
+  mutate(se = mse_1se - mse_min) %>%
+  ggplot(aes(alpha, mse_min)) +
+  geom_line(size = 2) +
+  geom_ribbon(aes(ymax = mse_min + se, ymin = mse_min - se), alpha = .25) +
+  ggtitle("MSE ± one standard error")
+
+# using lasso as the best model
+cv_lasso   <- cv.glmnet(ames_train_x, ames_train_y, alpha = 1.0)
+min(cv_lasso$cvm)
+
+# predict
+pred <- predict(cv_lasso, s = cv_lasso$lambda.min, ames_test_x)
+mean((ames_test_y - pred)^2)
