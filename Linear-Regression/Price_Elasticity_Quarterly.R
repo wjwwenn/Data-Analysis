@@ -1,5 +1,5 @@
 # Price Elasticity (year-on-year % change in retail price against demand data)
-# Using quarterly data (compared with yearly/monthly) as R2 calculated in excel is better.
+# using quarterly data (compared with yearly/monthly) as R2 calculated in excel is better
 # useful to determine the effect of inflationary pressure on demand
 
 library(moments)
