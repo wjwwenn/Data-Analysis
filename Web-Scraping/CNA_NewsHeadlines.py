@@ -1,5 +1,6 @@
 # -------------------------- BEAUTIFUL SOUP -------------------------- #
 # 2A - GETTING NEWS HEADLINES  
+import requests
 from bs4 import BeautifulSoup
 url = "http://channelnewsasia.com/"
 # Make a GET request to fetch the raw HTML content
