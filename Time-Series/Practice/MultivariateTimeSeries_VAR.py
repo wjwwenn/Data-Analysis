@@ -1,4 +1,4 @@
-# Multivariate Time Series Analysis with VAR and VECM
+# Multivariate Time Series Analysis with VAR
 # Vetor Autoregressive (VAR) - when 2 or > time series influence each other
 # Predictors are lags (time delayed value) of the series
 # ARIMA - uni-directional, VAR - bi-directional
