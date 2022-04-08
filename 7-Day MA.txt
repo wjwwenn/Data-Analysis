@@ -1,0 +1,16 @@
+// PowerBI DAX for Moving Average
+// Starting from the first full period
+
+7-Day MA = 
+VAR period = 7
+VAR the_first_date =
+    CALCULATE ( FIRSTDATE ( RefinedProducts[Date] ), ALLSELECTED ( RefinedProducts[Date] ) )
+VAR last_date =
+    LASTDATE ( RefinedProducts[Date] )
+VAR sum_in_period =
+    CALCULATE (
+        SUM (RefinedProducts[Thousand barrels per day]),
+        DATESINPERIOD ( RefinedProducts[Date], last_date, - period, DAY )
+    )
+RETURN
+    IF ( last_date - the_first_date >= period - 1, sum_in_period / period )
