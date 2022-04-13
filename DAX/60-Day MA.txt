@@ -1,0 +1,10 @@
+60 Day Moving Avg = 
+VAR FirstVisibleDate = 
+    MAX ( Dates[Date] )
+VAR Result = 
+    CALCULATE ( 
+        [Average Daily Sales],
+        DATESINPERIOD ( Dates[Date], FirstVisibleDate, -60, DAY )
+    )
+RETURN
+    Result
