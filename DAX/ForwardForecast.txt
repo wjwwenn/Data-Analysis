@@ -1,0 +1,21 @@
+// Creating Forward Forecasts
+
+// Using variables to create 1 measure for a 3-year forecast
+// Forecast to show 5% growth rate with a factor
+Sales Forecast =
+VAR
+	SalesLY = CALCULATE([Total Sales], DATEADD(Dates[Date], -1, YEAR))
+VAR
+	Sales2YrsAgo = CALCULATE([Total Sales], DATEADD(Dates[Date], -2, YEAR))
+VAR
+	Sales3YrsAgo = CALCULATE([Total Sales], DATEADD(Dates[Date], -3, YEAR))
+VAR
+	Factor = 1.05
+RETURN
+DIVIDE(SalesLY + Sales2YearsAgo, Sales3YrsAgo, 3, 0) * Factor
+
+// Cumulative Forecast
+Cumulative Forecast = 
+Calculate([Sales Forecast], 
+	Filter(ALLSELECTED(Dates),
+	      Dates[Date] <= MAX(Dates[Date])))
