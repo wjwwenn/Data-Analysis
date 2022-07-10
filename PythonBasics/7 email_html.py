@@ -5,7 +5,7 @@ import smtplib
 host = "smtp.gmail.com"
 port = 587
 username = "wjingwen96@gmail.com"
-password = "zumlxfuvbmkhztod"
+password = "" # use gmail 16 digit app password
 from_email = username
 to_email = username
 # to_list = ["wjingwen96@gmail.com"]
