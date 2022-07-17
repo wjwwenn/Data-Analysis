@@ -14,7 +14,7 @@ def render_context(template_string, context):
     return template_string.format(**context)
 
 file_ = '/Users/jingwen/Desktop/30 Days of Python/templates/email_message.txt'
-file_html = '/Users/jingwen/Desktop/30 Days of Python/templates/templates/mail_message.html'
+file_html = '/Users/jingwen/Desktop/30 Days of Python/templates/mail_message.html'
 template = get_template(file_)
 template_html = get_template(file_html)
 context = {
