@@ -1,20 +1,21 @@
-In general, to create or retrieve a file on your local system you must use the `open` command. Open has a few different "modes" so let's go through them now.
+To create/retrieve a file on your local system, use the `open` command. 
+Open has a few different "modes".
 
 ## 1 Create a file with the `w` mode
-`w` means write as in write-mode. First let's define a random path to a filename that does not yet exist.
+`w` = write-mode. First define a random path to a filename yet to exist.
 ```python
 to_save_dir = "/path/to/save/in/"
 filename = "myfilename.txt"
 full_path = to_save_dir + filename
 ```
-Now let's `open()` that path so we can save it.
+`open()` that path so we can save it.
 
 ```python
 with open(full_path, 'w') as file_object:
     file_object.write("Hello world")
 ```
 
-If we don't want to use `with` we just have to explicitly `close` the `open` call.
+If we don't want to use `with`, we have to explicitly `close` the `open` call.
 
 ```python
 file_object = open(full_path, 'w')
@@ -23,7 +24,7 @@ file_object.save()
 ```
 
 ## 2 Open a file with the `r` mode
-`r` means write as in write-mode. First let's define a random path to a filename that already exists (we created it above).
+`r` = read-mode. Define a random path to a filename that already exists.
 ```python
 to_save_dir = "/path/to/save/in/"
 filename = "myfilename.txt"
@@ -36,7 +37,7 @@ with open(full_path, 'r') as file_object:
     print(contents)
 ```
 
-If we don't want to use `with` we just have to explicitly `close` the `open` call.
+If we don't want to use `with`, we have to explicitly `close` the `open` call.
 
 ```python
 file_object = open(full_path, 'r')
